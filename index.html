@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status CPR Training — Investor Pitch Deck</title>
+    <style>
+        :root {
+            --primary: #0072CE; /* AHA blue */
+            --secondary: #D9261C; /* AHA red */
+            --accent: #007C89; /* Teal accent */
+            --light: #F5F5F5;
+            --dark: #333333;
+            --slide-transition: 0.5s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity var(--slide-transition);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+        
+        .slide-header {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+        
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid #eaeaea;
+            font-size: 0.9rem;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-style: italic;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .control-btn:hover {
+            background-color: #005bab;
+        }
+        
+        .control-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .centered-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .box {
+            background-color: rgba(0, 114, 206, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-box {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-description {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+        
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-phase {
+            width: 100px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .cover-slide {
+            background: linear-gradient(135deg, rgba(0,114,206,0.95), rgba(0,124,137,0.9));
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .cover-slide .slide-header {
+            color: white;
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .team-member {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .team-member-role {
+            color: var(--accent);
+            font-style: italic;
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px;
+            }
+            
+            .slide-header {
+                font-size: 1.8rem;
+            }
+            
+            .two-column, .stats, .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Cover -->
+        <div class="slide cover-slide active" id="slide-1">
+            <div class="centered-content">
+                <div class="logo-container">
+                    <div class="logo">Status CPR Training</div>
+                    <div class="tagline">RN-LED CPR & AED Courses</div>
+                </div>
+                <h2>"Empowering Communities, Saving Lives"</h2>
+                <p style="margin-top: 40px;">Presenter Name & Title</p>
+                <p style="margin-top: 10px;">Date: January 2024</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Mission & Vision -->
+        <div class="slide" id="slide-2">
+            <h1 class="slide-header">Mission & Vision</h1>
+            <div class="slide-content">
+                <div class="box">
+                    <h2>Mission</h2>
+                    <p>Deliver the highest quality, AHA/ARC-aligned CPR training accessible nationwide.</p>
+                </div>
+                <div class="box">
+                    <h2>Vision</h2>
+                    <p>Become the most trusted hybrid CPR training platform, combining cutting-edge LMS technology with real-world instructor expertise.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 2</div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Market Opportunity -->
+        <div class="slide" id="slide-3">
+            <h1 class="slide-header">Market Opportunity</h1>
+            <div class="slide-content">
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number">350,000+</div>
+                        <div class="stat-description">Out-of-hospital cardiac arrests annually in the US</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">2-3x</div>
+                        <div class="stat-description">Survival rates increase with immediate CPR and AED use</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="images/cardiogram.jpg" alt="Heart cardiogram" style="max-width: 80%; height: auto; border-radius: 5px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+                </div>
+                <ul>
+                    <li>Growing demand for accessible hybrid training models (online + in-person)</li>
+                    <li>Opportunity: scalable platform serving hospitals, workplaces, schools, and community responders</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 3</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Why Status CPR Training? -->
+        <div class="slide" id="slide-4">
+            <h1 class="slide-header">Why Status CPR Training?</h1>
+            <div class="slide-content">
+                <ul>
+                    <li><span class="highlight">200+ years</span> combined clinical & nursing experience behind the courses</li>
+                    <li>Officially affiliated with <span class="highlight">AHA and ARC</span>, leveraging their gold-standard guidelines</li>
+                    <li>Deep multi-layered curriculum: BLS, Heartsaver, ACLS, PALS, First Aid, Bloodborne Pathogens, Opioid Response</li>
+                    <li>Full instructor-led, skills-based, and digital learning integration</li>
+                    <li>Strong focus on accessibility and modern educational best practices</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 4</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Comprehensive Course Curriculum -->
+        <div class="slide" id="slide-5">
+            <h1 class="slide-header">Comprehensive Course Curriculum</h1>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h3>Course Offerings:</h3>
+                        <ul>
+                            <li>Basic Life Support (BLS)</li>
+                            <li>Heartsaver CPR AED & First Aid</li>
+                            <li>Pediatric First Aid & PALS</li>
+                            <li>Advanced Cardiovascular Life Support (ACLS)</li>
+                            <li>Bloodborne Pathogens & Opioid Emergency Response</li>
+                            <li>Community Hands-Only CPR</li>
+                        </ul>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <img src="images/cpr-training.jpg" alt="CPR Training Session" style="max-width: 100%; height: auto; border-radius: 5px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Each Course Includes:</h3>
+                        <ul>
+                            <li>Fully written lesson texts, instructor scripts, and skills checklists</li>
+                            <li>Video scripts with multi-angle demonstrations</li>
+                            <li>Scenario-based quizzes & assessments</li>
+                            <li>ADA compliant accessibility features</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 5</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Instructional Design & Quality Assurance -->
+        <div class="slide" id="slide-6">
+            <h1 class="slide-header">Instructional Design & Quality Assurance</h1>
+            <div class="slide-content">
+                <h3>Multi-layered learning approach:</h3>
+                <div class="box" style="margin-top: 20px;">
+                    <p class="highlight">Learn → See → Practice → Prove → Maintain</p>
+                </div>
+                <ul style="margin-top: 20px;">
+                    <li>Skill mastery emphasized through guided hands-on sessions</li>
+                    <li>Instructor guides provide standardized pacing, remediation, and evaluation protocols</li>
+                    <li>Real-time feedback via skill checklists aligned with AHA/ARC standards</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 6</div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Technology Stack -->
+        <div class="slide" id="slide-7">
+            <h1 class="slide-header">Technology Stack</h1>
+            <div class="slide-content">
+                <ul>
+                    <li><span class="highlight">Frontend:</span> React + Tailwind CSS, for responsive, accessible UI</li>
+                    <li><span class="highlight">Backend:</span> Node.js with Express.js, SQLite database for local lightweight operation, scalable to cloud DB</li>
+                    <li><span class="highlight">LMS:</span> Custom-built JSON modular lesson architecture with SCORM compatibility</li>
+                    <li><span class="highlight">Payment:</span> Integrated Stripe and PayPal payment processing</li>
+                    <li><span class="highlight">Scheduling:</span> Integrated with Google Calendar API for skills sessions</li>
+                    <li><span class="highlight">AI Assistance:</span> Google Gemini AI-powered voice UI and MCP agents for guided training</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 7</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Compliance & Certification -->
+        <div class="slide" id="slide-8">
+            <h1 class="slide-header">Compliance & Certification</h1>
+            <div class="slide-content">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="images/defibrillator.jpg" alt="AED Defibrillator" style="max-width: 60%; height: auto; border-radius: 5px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+                </div>
+                <ul>
+                    <li>Official AHA/ARC affiliation ensures adherence to all training guidelines</li>
+                    <li>Digital certificate issuance with expiration tracking and reminders</li>
+                    <li>Instructor portal for rostering, skills validation, and roster exports compatible with AHA/ARC portals</li>
+                    <li>Comprehensive audit-ready compliance reporting dashboards</li>
+                    <li>Student manual policy and AHA disclaimers embedded throughout</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 8</div>
+            </div>
+        </div>
+
+        <!-- Slide 9: MVP Roadmap -->
+        <div class="slide" id="slide-9">
+            <h1 class="slide-header">MVP Roadmap</h1>
+            <div class="slide-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 1</div>
+                        <div class="timeline-content">Launch core courses (BLS & Heartsaver CPR AED Hybrid)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 2</div>
+                        <div class="timeline-content">Add advanced courses (ACLS, PALS) and First Aid modules</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 3</div>
+                        <div class="timeline-content">Build out instructor portal and full skills session scheduler</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 4</div>
+                        <div class="timeline-content">Integrate full AI voice-guided training assistants</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-phase">Phase 5</div>
+                        <div class="timeline-content">Expand nationwide with multi-location support and employer partnerships</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 9</div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Investment Ask -->
+        <div class="slide" id="slide-10">
+            <h1 class="slide-header">Investment Ask</h1>
+            <div class="slide-content">
+                <h2>Amount requested: $[AMOUNT]</h2>
+                <h3 style="margin-top: 20px;">Use of funds:</h3>
+                <ul>
+                    <li>Course content finalization & video production</li>
+                    <li>Development of AI-powered LMS features and compliance tooling</li>
+                    <li>Marketing & outreach to hospitals, schools, and corporate clients</li>
+                    <li>Staff hiring (developers, instructors, admin)</li>
+                </ul>
+                <div class="box" style="margin-top: 20px;">
+                    <p>Projected ROI and timelines</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 10</div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Competitive Landscape -->
+        <div class="slide" id="slide-11">
+            <h1 class="slide-header">Competitive Landscape</h1>
+            <div class="slide-content">
+                <h3>Comparison of Status CPR Training with:</h3>
+                <ul>
+                    <li>Traditional in-person-only CPR classes</li>
+                    <li>Pure online-only providers lacking hands-on practice</li>
+                    <li>Existing LMS platforms without specialized CPR content</li>
+                </ul>
+                <div class="box" style="margin-top: 20px;">
+                    <h3>Our Edge</h3>
+                    <p>Hybrid, scalable, officially aligned, clinically-driven, AI-enhanced platform</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 11</div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Team & Expertise -->
+        <div class="slide" id="slide-12">
+            <h1 class="slide-header">Team & Expertise</h1>
+            <div class="slide-content">
+                <div class="team-grid">
+                    <div class="team-member">
+                        <h3>Team Member 1</h3>
+                        <p class="team-member-role">Clinical Director</p>
+                        <p>25+ years nursing experience</p>
+                    </div>
+                    <div class="team-member">
+                        <h3>Team Member 2</h3>
+                        <p class="team-member-role">Lead Instructor</p>
+                        <p>AHA Master Trainer</p>
+                    </div>
+                    <div class="team-member">
+                        <h3>Team Member 3</h3>
+                        <p class="team-member-role">Tech Lead</p>
+                        <p>10+ years LMS development</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px;"><span class="highlight">200+ years</span> combined nursing & clinical training experience</p>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 12</div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Supporting Materials -->
+        <div class="slide" id="slide-13">
+            <h1 class="slide-header">Supporting Materials</h1>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h3>Sample Materials:</h3>
+                        <ul>
+                            <li>Sample lesson snippet (with instructor script excerpt)</li>
+                            <li>Quiz example question & feedback</li>
+                            <li>Sample digital certificate design draft</li>
+                            <li>Admin dashboard mockup preview</li>
+                            <li>Branding concept visuals</li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <h3>Sample Lesson Excerpt:</h3>
+                        <p>"When performing chest compressions, ensure proper hand placement on the lower half of the sternum. Press down at least 2 inches for adults, and compress at a rate of 100-120 compressions per minute."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 13</div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Next Steps & Call to Action -->
+        <div class="slide" id="slide-14">
+            <h1 class="slide-header">Next Steps & Call to Action</h1>
+            <div class="slide-content">
+                <ul>
+                    <li>Finalize MVP development with investor support</li>
+                    <li>Launch pilot programs in Texas region</li>
+                    <li>Seek full AHA/ARC approval and endorsements</li>
+                    <li>Scale marketing for nationwide growth</li>
+                </ul>
+                <div class="box" style="margin-top: 30px; text-align: center;">
+                    <h2>Join us in transforming CPR education nationwide</h2>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 14</div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Q&A -->
+        <div class="slide" id="slide-15">
+            <h1 class="slide-header">Q&A</h1>
+            <div class="slide-content centered-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Thank You</h2>
+                <p style="font-size: 1.5rem; margin-bottom: 30px;">Questions?</p>
+                <div class="logo-container">
+                    <div class="logo" style="font-size: 2rem;">Status CPR Training</div>
+                    <div class="tagline">"Empowering Communities, Saving Lives"</div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Status CPR Training</div>
+                <div>Slide 15</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="prev-btn" disabled>Previous</button>
+        <button class="control-btn" id="next-btn">Next</button>
+    </div>
+    
+    <div class="slide-counter" id="slide-counter">Slide 1 / 15</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slideCounter = document.getElementById('slide-counter');
+            let currentSlide = 0;
+            
+            // Update buttons and counter
+            function updateControls() {
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                slideCounter.textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            }
+            
+            // Show current slide
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    if (i === index) {
+                        slide.classList.add('active');
+                    } else {
+                        slide.classList.remove('active');
+                    }
+                });
+                currentSlide = index;
+                updateControls();
+            }
+            
+            // Next slide
+            function nextSlide() {
+                if (currentSlide < slides.length - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            }
+            
+            // Previous slide
+            function prevSlide() {
+                if (currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                }
+            }
+            
+            // Button event listeners
+            prevBtn.addEventListener('click', prevSlide);
+            nextBtn.addEventListener('click', nextSlide);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+            
+            // Initialize
+            updateControls();
+        });
+    </script>
+</body>
+</html>
